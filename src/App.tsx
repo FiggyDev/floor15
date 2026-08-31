@@ -8,6 +8,8 @@ import {
   type CastMember, type Scene, type ElevScene,
 } from "./show";
 import { engineSceneCards, engineElevScenes, type EngineSceneCard } from "./engineScenes";
+import { CharacterSprite, spriteIdFor } from "./sprites";
+import SocialLoop from "./SocialLoop";
 
 /* ---------- small utils ---------- */
 function etHour(): number {
@@ -104,19 +106,18 @@ function Hero({ countdown }: { countdown: string }) {
   );
 }
 
-/* ---------- live floor ---------- */
-function Desk({ c, speaking, line }: { c: CastMember; speaking: boolean; line: string }) {
+/* ---------- live floor: the animated wide shot ---------- */
+function Station({ c, speaking, line }: { c: CastMember; speaking: boolean; line: string }) {
   return (
-    <div className="desk">
-      <span className="mooddot" style={{ background: c.moodC }} title={"mood: " + c.mood} />
-      <div className="desk-top">
-        <span className="avatar" style={{ background: DEPT[c.dept].c }}>{c.mono}</span>
-        <span>
-          <span className="desk-name">{c.name}</span><br />
-          <span className="desk-role">{c.role}</span>
-        </span>
+    <div className={"station" + (speaking ? " speaking" : "")}>
+      <div className="st-bubble">{line}</div>
+      <CharacterSprite id={c.id} size={92} talking={speaking} />
+      <div className="st-desk">
+        <span className="st-mood" style={{ background: c.moodC }} title={"mood: " + c.mood} />
+        <div className="monitor" />
       </div>
-      <div className={"bubble" + (speaking ? " speaking" : "")}>{line}</div>
+      <span className="st-name">{c.name}</span>
+      <span className="st-role">{c.role}</span>
     </div>
   );
 }
@@ -160,8 +161,14 @@ function LiveFloor() {
           Seven desks, one bullpen. Speech bubbles are live. Moods are real. One of these people is always
           in frame and you never notice her.
         </p>
-        <div className="floorgrid">
-          {CAST.map((c, i) => <Desk key={c.id} c={c} speaking={speaker === i} line={lines[i]} />)}
+        <div className="stage">
+          <div className="stage-wall">
+            <div className="stage-window"><span className="f16light" /></div>
+          </div>
+          <span className="stage-onair">● REC</span>
+          <div className="stations">
+            {CAST.map((c, i) => <Station key={c.id} c={c} speaking={speaker === i} line={lines[i]} />)}
+          </div>
         </div>
         <div className="widgetrow">
           <div className="widget">
@@ -248,7 +255,12 @@ function ElevatorCam() {
     return () => { alive = false; clearTimeout(timer); };
   }, []);
 
-  const visible = st.scene.lines.slice(Math.max(0, st.shown - 6), st.shown);
+  const visible = st.scene.lines.slice(Math.max(0, st.shown - 4), st.shown);
+  const current = st.shown > 0 ? st.scene.lines[st.shown - 1] : null;
+  const speakerId = spriteIdFor(current?.who ?? null);
+  const doorsOpen = st.shown > 0 && st.shown < st.scene.lines.length;
+  const carCast = st.scene.lt.map((e) => spriteIdFor(e[0])).filter((x): x is string => !!x).slice(0, 2);
+  const redactOn = !!current?.redacted;
   const lastSpeaker = [...st.scene.lines.slice(0, st.shown)].reverse().find((l) => l.who);
   const lt = lastSpeaker
     ? st.scene.lt.find((e) => e[0].startsWith(lastSpeaker.who!.split(" ")[0])) ?? st.scene.lt[0]
@@ -270,6 +282,15 @@ function ElevatorCam() {
           <div className="elev-head">
             <span className="camlabel"><span className="rec">●&nbsp;REC</span>&nbsp;&nbsp;ELEVATOR — CAR&nbsp;A</span>
             <span className="floorcount num">{st.floor}</span>
+          </div>
+          <div className={"carview" + (doorsOpen ? " doors-open" : "")}>
+            <div className="car-inner">
+              {carCast.map((id) => (
+                <CharacterSprite key={id} id={id} size={132} talking={speakerId === id} />
+              ))}
+            </div>
+            <div className={"car-redact" + (redactOn ? " on" : "")}>REDACTED</div>
+            <div className="door l" /><div className="door r" />
           </div>
           <div className="elev-body" aria-live="polite">
             {visible.map((l, i) => (
@@ -734,7 +755,23 @@ function Footer() {
 }
 
 /* ---------- root ---------- */
+function useHash(): string {
+  const [h, setH] = useState(() => window.location.hash);
+  useEffect(() => {
+    const on = () => setH(window.location.hash);
+    window.addEventListener("hashchange", on);
+    return () => window.removeEventListener("hashchange", on);
+  }, []);
+  return h;
+}
+
 export default function App() {
+  const hash = useHash();
+  if (hash === "#loop") return <SocialLoop />;
+  return <SitePage />;
+}
+
+function SitePage() {
   const [night, setNight] = useState(() => {
     const saved = lsGet("f15_night");
     if (saved !== null) return saved === "1";

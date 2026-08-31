@@ -5,6 +5,21 @@ Newest first. The repo is part of the show; the build log is its bootleg tape.*
 
 ---
 
+## 2026-08-31 — The office is animated
+- **Shipped:** SVG sprite system for the Launch Seven (idle bob, blink, talking mouths,
+  signature accessories — the putter, the glasses-up, the vest, the phone at 45°, the earpiece,
+  the tape-scarf, the six-badge lanyard). The live floor is now a staged wide shot with desks,
+  monitors, a wall, and the Floor 16 window. The Elevator Cam has a visible car: doors, two
+  sprites, and a physical REDACTED bar that sweeps the frame. New `#loop` route: a
+  choreographed ~26-second scene built for screen recording.
+- **Why it matters:** the concept is now legible in 3 seconds without reading a word.
+- **Screenshot/clip idea:** record `#loop` once. It IS the clip.
+- **Tests:** engine 25/25 · site build green · language gate clean. Pure CSS/SVG — zero assets,
+  reduced-motion respected.
+- **Lore note:** Roxy's idle animation is 3× slower than everyone else's. Her stillness is
+  now a rendering property.
+- **Next build:** record the loop, then the social push.
+
 ## 2026-08-30 — Engine ↔ Site integration
 - **Shipped:** the data contract (`floor15.scene-package.v1`), `engine approve` (the human
   gate as a command), `export-site` with three gates, Day 1 scene live on the site with the

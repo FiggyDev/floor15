@@ -42,8 +42,9 @@ export function toSceneCard(p: ScenePackage, preview = false): EngineSceneCard {
 }
 
 /** Elevator-cam playable shape. Non-elevator scenes hold the counter at the show's floor. */
-export function toElevScene(p: ScenePackage): ElevScene & { safety: ScenePackage["safety"] } {
+export function toElevScene(p: ScenePackage): ElevScene & { safety: ScenePackage["safety"]; loc: string } {
   return {
+    loc: p.location,
     title: p.title,
     from: p.floors?.from ?? 15,
     to: p.floors?.to ?? 15,

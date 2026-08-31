@@ -2,6 +2,25 @@
 
 All notable changes. Format: Keep a Changelog-ish; versions are ships, not releases yet.
 
+## [0.6.0] — 2026-08-31 — the living world
+### Added
+- Six zones in one scene: Floor 15 office, lobby cafe, boardroom interior, rooftop bar,
+  residence hallway, Floor 16 tease (silhouettes, one lamp, a blinking red light)
+- Movement: waypoint walking with arm swing + step bob, turn-toward-speaker, talking gestures,
+  ambient wandering to points of interest (Roxy walks slower and abstains — canon)
+- Cameras: wide/desk/elevator/boardroom/legal/orbit/follow + cafe/rooftop/hallway/floor16;
+  glide within a zone, hard cut between zones
+- Elevator world nav (PH/17/16/ROOF/15/RES/L — locked floors stay locked, 16 flickers)
+- Visible daily schedule strip (coffee → standup → desk → gossip → incident → elevator → COB →
+  after hours → 02:07)
+- Soul File cards: mood, current goal, relationship tension, latest canon memory
+- 7 clip routes (#loop, #loop-office, #loop-legal, #loop-cafe, #loop-rooftop, #loop-hallway,
+  #loop-16) + #loops recording menu
+- Scene metadata drives location/camera via locationToMode(); engine scenes carry `location`
+- Expressive faces (eye whites, pupils, glints, cheeks, resting smile vs. talking mouth),
+  blinking, contact shadows, hemisphere light, readable night mode, dual-layer skylines
+- **Consciousness gate** in the build: fails on sentience/consciousness claims unless negated
+
 ## [0.5.0] — 2026-08-31 — the 3D office
 ### Added
 - three.js cartoon office (toon shading, outlines, procedural only, zero assets): skyline glass

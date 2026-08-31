@@ -358,8 +358,8 @@
   .loopwrap{min-height:100vh; background:var(--ink); display:flex; align-items:center; justify-content:center; padding:20px}
   .loopstage{position:relative; width:min(96vw, 860px); aspect-ratio:16/10; background:var(--ink2); border:1px solid var(--ink-line); overflow:hidden; color:var(--on-ink)}
   .loop-top{position:absolute; top:0; left:0; right:0; display:flex; align-items:center; gap:12px; padding:10px 16px; z-index:8; background:linear-gradient(180deg, rgba(11,10,8,.9), transparent)}
-  .loop-elev{position:absolute; inset:52px 150px 66px 24px; border:1px solid var(--ink-line); background:#242017; overflow:hidden}
-  .loop-side{position:absolute; top:52px; right:24px; width:112px; bottom:66px; display:flex; flex-direction:column; gap:10px; z-index:7}
+  .loop-elev{position:absolute; inset:52px 150px 108px 24px; border:1px solid var(--ink-line); background:#242017; overflow:hidden}
+  .loop-side{position:absolute; top:52px; right:24px; width:112px; bottom:108px; display:flex; flex-direction:column; gap:10px; z-index:7}
   .loop-panel{background:var(--ink); border:1px solid var(--ink-line); padding:8px; text-align:center}
   .loop-panel .lbl{font-family:var(--f-mono); font-size:8px; letter-spacing:.18em; color:var(--on-ink-dim); display:block; margin-bottom:5px}
   .loop-dial{font-family:var(--f-chyron); font-size:34px; color:var(--brass-bright); line-height:1; transition:color .3s}
@@ -367,9 +367,10 @@
   .loop-btn16{width:38px; height:38px; margin:0 auto; border-radius:50%; border:1.5px solid var(--ink-line); display:flex; align-items:center; justify-content:center;
     font-family:var(--f-chyron); font-size:15px; color:var(--on-ink-dim)}
   .loop-btn16.flash{border-color:var(--brass); color:var(--brass-bright); box-shadow:0 0 16px rgba(201,164,76,.6)}
-  .loop-lt{position:absolute; left:24px; right:150px; bottom:66px; background:var(--ink); border-top:2px solid var(--brass); padding:7px 14px; z-index:7}
+  .loop-lt{position:absolute; left:24px; right:150px; bottom:44px; background:var(--ink); border-top:2px solid var(--brass); padding:7px 14px; z-index:7}
   .loop-ticker{position:absolute; left:0; right:0; bottom:0; height:34px; background:var(--ink); border-top:2px solid var(--brass); display:flex; align-items:center; overflow:hidden; z-index:8}
-  .loop-lines{position:absolute; left:14px; right:14px; bottom:12px; z-index:4; display:flex; flex-direction:column; gap:6px}
+  .loop-lines{position:absolute; left:0; right:0; bottom:0; z-index:6; display:flex; flex-direction:column; gap:5px;
+    padding:26px 16px 12px; background:linear-gradient(180deg, transparent, rgba(11,10,8,.86) 45%)}
   .loop-lines .eline .txt{text-shadow:0 1px 6px #000}
   .loop-card{position:absolute; inset:0; z-index:10; background:var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center;
     opacity:0; pointer-events:none; transition:opacity .5s}
@@ -393,3 +394,28 @@
   .carview3d{position:relative; height:230px; border-bottom:1px solid var(--ink-line); overflow:hidden}
   .loop3d{position:absolute; inset:0}
   @media (max-width:700px){ .stage3d{aspect-ratio:4/3} .camswitch{flex-direction:row; flex-wrap:wrap; left:12px; right:auto; top:auto; bottom:52px} .cambtn{text-align:left} }
+
+  /* ============ v0.6: world panel, day strip, soul card ============ */
+  .worldpanel{position:absolute; top:12px; left:12px; z-index:4; display:flex; flex-direction:column; gap:4px; align-items:center;
+    background:rgba(23,21,15,.82); border:1px solid var(--ink-line); padding:8px 7px; border-radius:22px}
+  .wp-label{font-family:var(--f-mono); font-size:7.5px; letter-spacing:.2em; color:var(--on-ink-dim)}
+  .wpbtn{width:34px; height:34px; border-radius:50%; border:1px solid var(--ink-line); background:var(--ink2); color:var(--on-ink-dim);
+    font-family:var(--f-chyron); font-weight:700; font-size:11px}
+  .wpbtn.on{border-color:var(--brass); color:var(--brass-bright); box-shadow:0 0 10px rgba(201,164,76,.4)}
+  .wpbtn:hover:not(:disabled){color:var(--on-ink)}
+  .wpbtn.locked{opacity:.35; cursor:not-allowed}
+  .wpbtn.tease{animation:flick 9s infinite}
+  .daystrip{display:flex; gap:8px; overflow-x:auto; padding:0 2px 10px; margin-top:-8px}
+  .daycell{flex:none; font-family:var(--f-mono); font-size:10px; letter-spacing:.04em; color:var(--walnut-soft);
+    border:1px solid var(--line); border-radius:16px 4px 16px 4px; padding:5px 10px; background:var(--paper); white-space:nowrap}
+  .daycell b{color:var(--brass-dim); font-weight:700}
+  .daycell i{opacity:.7; font-style:italic}
+  .daycell.now{border-color:var(--red); color:var(--walnut)}
+  .daycell.now b{color:var(--red)}
+  .soulcard{background:var(--ink); color:var(--on-ink); border-radius:14px 4px 14px 4px; padding:10px 12px; margin-bottom:4px}
+  .soul-head{display:flex; justify-content:space-between; font-family:var(--f-mono); font-size:9px; letter-spacing:.16em;
+    color:var(--brass-bright); border-bottom:1px solid var(--ink-line); padding-bottom:5px; margin-bottom:7px}
+  .soul-row{display:flex; gap:10px; font-size:12px; margin-bottom:4px; align-items:baseline}
+  .soul-row b{font-family:var(--f-mono); font-size:8.5px; letter-spacing:.12em; color:var(--on-ink-dim); flex:none; width:64px}
+  .souldot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px}
+  @media (max-width:700px){ .worldpanel{flex-direction:row; left:12px; right:auto; top:auto; bottom:12px; border-radius:20px} }

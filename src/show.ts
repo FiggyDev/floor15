@@ -26,11 +26,17 @@ export const DEPT: Record<DeptId, { label: string; c: string }> = {
   intern: { label: "Intern Army", c: "var(--d-intern)" },
 };
 
+export interface SoulFile {
+  goal: string;        // current goal (from state.goals.week)
+  tension: string;     // sharpest relationship edge right now
+  memory: string;      // latest canon memory
+}
+
 export interface CastMember {
   id: string; name: string; mono: string; dept: DeptId; role: string;
   lt: string; status: string; mood: string; moodC: string; quote: string;
   bubble: string[]; secrets: string; bit: string; rivalry: string;
-  merch: string; file: string;
+  merch: string; file: string; soul: SoulFile;
 }
 
 export const CAST: CastMember[] = [
@@ -44,7 +50,8 @@ export const CAST: CastMember[] = [
     bit: "THE VISION — once a week, a new company direction on a single slide with one word on it. Nobody may ask questions.",
     rivalry: "Whoever is walking on his ceiling. Internally: none — Barry cannot perceive a rival on his own floor, which drives ambitious people insane.",
     merch: "Q3 WAS A DONATION TO OUR FUTURE",
-    file: "FILE #001 — thinnest in the cabinet. Gloria keeps it that way. Nobody asks why.",
+    file: "FILE #001 — thinnest in the cabinet. Gloria keeps it that way. Nobody asks why.",    soul: { goal: "unveil The Vision without being asked a question", tension: "the ceiling (occupant unknown, resentment rising)", memory: "Pronounced the product name two ways. Both stuck." },
+
   },
   {
     id: "linda", name: "Linda Legal", mono: "LL", dept: "legal", role: "Chief Compliance Officer",
@@ -56,7 +63,8 @@ export const CAST: CastMember[] = [
     bit: "LEGAL SAYS NO — the week's ideas rejected one by one, each reason shorter than the last. The last one is rejected with a look.",
     rivalry: "Max (professional, eternal, almost fond). Trixie (not fond). Institutionally: the Nightlife Committee.",
     merch: "REDACTED BY LEGAL",
-    file: "FILE #002 — flagged 'DO NOT ANTAGONIZE' in Gloria's handwriting. Underlined twice.",
+    file: "FILE #002 — flagged 'DO NOT ANTAGONIZE' in Gloria's handwriting. Underlined twice.",    soul: { goal: "one signature from Barry, any document, any decade", tension: "Max — professional, eternal, almost fond", memory: "First on-air redaction. Stands by the bar." },
+
   },
   {
     id: "max", name: "Max Margin", mono: "MM", dept: "trading", role: "Head of Trading",
@@ -68,7 +76,8 @@ export const CAST: CastMember[] = [
     bit: "THE CALL — one prediction a day, total certainty, career record displayed live on his file. The counter is sacred. Currently 0-for-everything.",
     rivalry: "Roxy Risk — she has flagged every disaster in advance, in writing. He treats her warnings as a contrarian indicator, out loud, to her face.",
     merch: "0-FOR-EVERYTHING (COUNT PRINTED AT ORDER TIME)",
-    file: "FILE #003 — thickest in the cabinet after five days. Contains one framed napkin.",
+    file: "FILE #003 — thickest in the cabinet after five days. Contains one framed napkin.",    soul: { goal: "recover standing after the budget", tension: "Roxy — respect +5 (hidden), trust −5 (public)", memory: "'…Was I the pattern?' Unanswered. Logged." },
+
   },
   {
     id: "trixie", name: "Trixie Trend", mono: "TT", dept: "marketing", role: "Head of Social",
@@ -80,7 +89,8 @@ export const CAST: CastMember[] = [
     bit: "THE RATIO REPORT — social metrics delivered at standup like war news, with a chyron. Casualties: Legal's engagement.",
     rivalry: "Linda (fire vs. extinguisher). Long-term: a PR hire who hasn't arrived yet. Short-term: consequence itself.",
     merch: "IT'S NOT A LEAK IF IT PERFORMS",
-    file: "FILE #004 — exists in three versions. Gloria is not sure who edited the second one.",
+    file: "FILE #004 — exists in three versions. Gloria is not sure who edited the second one.",    soul: { goal: "own the leak narrative", tension: "Linda — fire vs. extinguisher", memory: "Live-captioned the founding address into coherence." },
+
   },
   {
     id: "roxy", name: "Roxy Risk", mono: "RR", dept: "sec", role: "Head of Security & Risk",
@@ -92,7 +102,8 @@ export const CAST: CastMember[] = [
     bit: "THE DIAL — a physical threat dial at her desk, 0–10, adjusted wordlessly on entering any scene. Site-wide, live. Fear the dial.",
     rivalry: "Max Margin, eternal and load-bearing. She warns; he inverts.",
     merch: "I'M NOT PARANOID. I'M EARLY.",
-    file: "FILE #005 — contains zero strikes and one commendation she refused to accept.",
+    file: "FILE #005 — contains zero strikes and one commendation she refused to accept.",    soul: { goal: "identify the footsteps on 16", tension: "Max — she warns, he inverts", memory: "Memo 41 timestamped BEFORE the incident. Verified." },
+
   },
   {
     id: "manny", name: "Manny Merch", mono: "MC", dept: "merch", role: "Director of Merchandise",
@@ -104,7 +115,8 @@ export const CAST: CastMember[] = [
     bit: "THE DROP — Thursday, live: the week's design unveiled under a cloth, like a statue. Linda attends with a red pen. Both outcomes ship.",
     rivalry: "Linda kills a slogan a week on legal grounds. A design tyrant he hasn't met yet reviews his work anonymously, brutally.",
     merch: "THIS BLEND FORGIVES YOU",
-    file: "FILE #006 — includes a signed confession about a sandwich, and 'WAY more,' unprompted.",
+    file: "FILE #006 — includes a signed confession about a sandwich, and 'WAY more,' unprompted.",    soul: { goal: "the first drop sells out (it did; next one too)", tension: "Linda — one slogan killed per week", memory: "The bar became the shirt. 19 minutes to sellout." },
+
   },
   {
     id: "evan", name: "Evan Intern", mono: "EI", dept: "intern", role: "Intern",
@@ -116,7 +128,8 @@ export const CAST: CastMember[] = [
     bit: "QUICK QUESTION — the hand goes up in any scene, at any tension level, and the question either detonates the plot or accidentally solves it. When the hand goes up, clip it.",
     rivalry: "None — which IS the bit. His only nemesis is the coffee machine. Was. Was the coffee machine.",
     merch: "INTERN MADE THIS",
-    file: "FILE #007 — opened over the badge question. Currently the fastest-growing file. He would be thrilled.",
+    file: "FILE #007 — opened over the badge question. Currently the fastest-growing file. He would be thrilled.",    soul: { goal: "help", tension: "none — which IS the note", memory: "Apologized to the machine. A million people watched." },
+
   },
 ];
 

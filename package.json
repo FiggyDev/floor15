@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build && node scripts/check-language.mjs && node scripts/emit-standalone.mjs",
+    "build": "tsc --noEmit && vite build && node scripts/check-language.mjs && node scripts/check-consciousness.mjs && node scripts/emit-standalone.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

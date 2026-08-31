@@ -10,7 +10,8 @@ import {
 import { engineSceneCards, engineElevScenes, type EngineSceneCard } from "./engineScenes";
 import { CharacterSprite, spriteIdFor } from "./sprites";
 import SocialLoop from "./SocialLoop";
-import { Office3D, type CamMode } from "./Office3D";
+import { Office3D, locationToMode, type CamMode, type CastPlacement } from "./Office3D";
+import { LoopMenu, LOOPS } from "./SocialLoop";
 
 /* ---------- small utils ---------- */
 function etHour(): number {
@@ -129,6 +130,7 @@ function LiveFloor({ night }: { night: boolean }) {
   const [dial, setDial] = useState(4);
   const [gl3d, setGl3d] = useState(true);
   const [cam, setCam] = useState<CamMode>("wide");
+  const [followId, setFollowId] = useState<string | undefined>(undefined);
   const tick = useRef(0);
 
   useEffect(() => {
@@ -164,14 +166,46 @@ function LiveFloor({ night }: { night: boolean }) {
           Seven desks, one bullpen. Speech bubbles are live. Moods are real. One of these people is always
           in frame and you never notice her.
         </p>
+        <div className="daystrip" aria-label="Today on 15">
+          {([["07:30", "COFFEE", "lobby cafe"], ["09:15", "STANDUP", "everyone lies"], ["10:30", "DESK WORK", "allegedly"],
+             ["12:30", "LUNCH GOSSIP", "cafe, again"], ["14:00", "INCIDENT", "scheduled surprise"], ["16:10", "ELEVATOR", "two enter"],
+             ["17:15", "COB", "the recap"], ["21:00", "AFTER HOURS", "rooftop"], ["02:07", "???", "residences"]] as [string, string, string][]).map(([tm, name, note], i) => {
+            const h = parseInt(tm, 10);
+            const cur = new Date().getHours();
+            const active = (cur >= h && (i === 8 || cur < parseInt("07 09 10 12 14 16 17 21 26".split(" ")[Math.min(i + 1, 8)], 10)));
+            return (
+              <span key={tm} className={"daycell" + (active ? " now" : "")}>
+                <b className="num">{tm}</b> {name} <i>{note}</i>
+              </span>
+            );
+          })}
+        </div>
         {gl3d ? (
           <div className="stage3d">
-            <Office3D mode={cam} speakerId={CAST[speaker].id} night={night} onFail={() => setGl3d(false)} className="stage3d-canvas" />
+            <Office3D mode={cam} speakerId={cam === "wide" || cam === "desk" || cam === "clippan" ? CAST[speaker].id : null} night={night} ambient followId={followId} onFail={() => setGl3d(false)} className="stage3d-canvas" />
             <span className="stage-onair">● REC</span>
             <div className="camswitch">
-              {(["wide", "desk", "boardroom", "legal", "elevator"] as CamMode[]).map((m) => (
-                <button key={m} className={"cambtn" + (cam === m ? " on" : "")} onClick={() => setCam(m)}>
-                  CAM · {m.toUpperCase()}
+              {(["wide", "desk", "elevator", "boardroom", "legal", "clippan"] as CamMode[]).map((m) => (
+                <button key={m} className={"cambtn" + (cam === m && !followId ? " on" : "")}
+                  onClick={() => { setFollowId(undefined); setCam(m); }}>
+                  CAM · {m === "clippan" ? "ORBIT" : m.toUpperCase()}
+                </button>
+              ))}
+              <button className={"cambtn" + (followId ? " on" : "")}
+                onClick={() => { const pick = CAST[Math.floor(Math.random() * CAST.length)].id; setFollowId(pick); setCam("follow"); }}>
+                CAM · FOLLOW{followId ? " · " + followId.toUpperCase() : ""}
+              </button>
+            </div>
+            <div className="worldpanel">
+              <span className="wp-label">BUILDING</span>
+              {([["PH", null, "locked"], ["17", null, "locked"], ["16", "floor16", "tease"], ["ROOF", "rooftop", ""],
+                 ["15", "wide", ""], ["RES", "hallway", ""], ["L", "cafe", ""]] as [string, CamMode | null, string][]).map(([label, m, cls]) => (
+                <button key={label}
+                  className={"wpbtn " + cls + (m && cam === m && !followId ? " on" : "")}
+                  disabled={!m}
+                  title={!m ? "Locked. For now." : label === "16" ? "Unregistered feed" : undefined}
+                  onClick={() => { if (m) { setFollowId(undefined); setCam(m); } }}>
+                  {label}
                 </button>
               ))}
             </div>
@@ -225,7 +259,7 @@ function LiveFloor({ night }: { night: boolean }) {
 }
 
 /* ---------- elevator cam ---------- */
-type PlayableElev = ElevScene & { safety?: { status: string; hits: unknown[] } | null };
+type PlayableElev = ElevScene & { safety?: { status: string; hits: unknown[] } | null; loc?: string };
 const ALL_ELEV: PlayableElev[] = [...ELEV_SCENES, ...engineElevScenes];
 
 interface ElevState { scene: PlayableElev; shown: number; floor: number; }
@@ -281,8 +315,12 @@ function ElevatorCam({ night }: { night: boolean }) {
   const current = st.shown > 0 ? st.scene.lines[st.shown - 1] : null;
   const speakerId = spriteIdFor(current?.who ?? null);
   const doorsOpen = st.shown > 0 && st.shown < st.scene.lines.length;
-  const carCast = st.scene.lt.map((e) => spriteIdFor(e[0])).filter((x): x is string => !!x).slice(0, 2);
+  const carCast = st.scene.lt.map((e) => spriteIdFor(e[0])).filter((x): x is string => !!x).slice(0, 4);
   const redactOn = !!current?.redacted;
+  // scene metadata drives location + camera (the engine contract at work)
+  const locStr = (st.scene as PlayableElev & { loc?: string }).loc ?? (st.scene.from !== st.scene.to ? "ELEVATOR" : "ELEVATOR");
+  const { cam: sceneCam, zone: sceneZone } = locationToMode(locStr);
+  const placements: CastPlacement[] = carCast.map((id, i) => ({ id, zone: sceneZone, slot: i }));
   const lastSpeaker = [...st.scene.lines.slice(0, st.shown)].reverse().find((l) => l.who);
   const lt = lastSpeaker
     ? st.scene.lt.find((e) => e[0].startsWith(lastSpeaker.who!.split(" ")[0])) ?? st.scene.lt[0]
@@ -307,7 +345,7 @@ function ElevatorCam({ night }: { night: boolean }) {
           </div>
           {gl3d ? (
             <div className="carview3d">
-              <Office3D mode="elevator" speakerId={speakerId} carCast={carCast} doorsOpen={doorsOpen}
+              <Office3D mode={sceneCam} speakerId={speakerId} placements={placements} doorsOpen={doorsOpen}
                 night={night} onFail={() => setGl3d(false)} />
               <div className={"car-redact" + (redactOn ? " on" : "")}>REDACTED</div>
             </div>
@@ -379,6 +417,13 @@ function CastCard({ c }: { c: CastMember }) {
         </div>
         <p className="cast-quote">"{c.quote}"</p>
         <Expander openLabel="Open full workup ▾" closeLabel="Close file ▴">
+          <div className="soulcard">
+            <div className="soul-head"><span>SOUL FILE</span><span className="num">v1 · PERSISTENT IDENTITY</span></div>
+            <div className="soul-row"><b>MOOD</b><span><i className="souldot" style={{ background: c.moodC }} />{c.mood}</span></div>
+            <div className="soul-row"><b>GOAL</b><span>{c.soul.goal}</span></div>
+            <div className="soul-row"><b>TENSION</b><span>{c.soul.tension}</span></div>
+            <div className="soul-row"><b>LAST CANON</b><span>{c.soul.memory}</span></div>
+          </div>
           <div className="drow"><b>Personnel file</b>{c.file} <a href="#files">Read it →</a></div>
           <div className="drow"><b>Secrets &amp; rumors</b>{c.secrets}</div>
           <div className="drow"><b>Recurring bit</b>{c.bit}</div>
@@ -797,7 +842,12 @@ function useHash(): string {
 
 export default function App() {
   const hash = useHash();
-  if (hash === "#loop") return <SocialLoop />;
+  if (hash === "#loops") return <LoopMenu />;
+  if (hash.startsWith("#loop")) {
+    const id = hash.slice(1);
+    if (LOOPS.some((l) => l.id === id)) return <SocialLoop loopId={id} />;
+    return <SocialLoop />;
+  }
   return <SitePage />;
 }
 

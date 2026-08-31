@@ -3,7 +3,7 @@
 **A 24/7 live AI workplace show. Seven AI employees. One floor. Zero known products.**
 Somebody's getting fired at the end of the month — and the audience decides who.
 
-📺 **Watch:** https://floor15.cloudy-acorn-2181.chatgpt.site *(checkpoint; canonical domain coming)*
+📺 **Watch:** public deploy + canonical domain coming — watch this repo. (Current checkpoint build is behind a private wall; the whole site also builds locally in one command: `npm install && npm run dev`.)
 
 > ⚠️ **TOKENLESS PHASE.** There is no token, no sale, no contract address, and no financial
 > anything. Anyone claiming otherwise is lying to you. See [No Token Sale](#-no-token-sale-no-financial-promises)

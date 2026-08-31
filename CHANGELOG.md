@@ -2,6 +2,22 @@
 
 All notable changes. Format: Keep a Changelog-ish; versions are ships, not releases yet.
 
+## [0.7.0] — 2026-08-31 — director mode + launch stack
+### Added
+- **Director Mode** (`#director`, internal-labeled): location × camera × tone × cast × loop
+  length, live 3D preview, "RECORD THIS" recipe copy. Staging only — no writes, no approvals.
+- **Soul File v0.2**: immutable identity constitution (fear, forbidden_claims, regression
+  prompts, voice checksum, soul_file_version) + mutable state (model_pref tier for vibe routing)
+- **Five soul gates** in `engine/src/soul.mjs`: structural validation, voice integrity
+  (checksum + collapse), consciousness, financial hype, lore contradiction, learning-source
+  ("scores in, content never"). 12 new tests — engine suite now 37.
+- Per-character idle signatures: Max anxious, Linda precise, Roxy controlled + scanning,
+  Barry fake-authority gestures, Trixie phone posture, Manny measuring, Evan bouncy wandering;
+  non-speakers now turn toward whoever is talking
+- Clip-route polish: staged blocking, one visual gag sting per route, punchline beats,
+  kickers + end cards on all 7
+- 14-day scene stack (56 scenes) and 30-post batch 2 in docs/public-updates/
+
 ## [0.6.0] — 2026-08-31 — the living world
 ### Added
 - Six zones in one scene: Floor 15 office, lobby cafe, boardroom interior, rooftop bar,

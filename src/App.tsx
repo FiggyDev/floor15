@@ -12,6 +12,7 @@ import { CharacterSprite, spriteIdFor } from "./sprites";
 import SocialLoop from "./SocialLoop";
 import { Office3D, locationToMode, type CamMode, type CastPlacement } from "./Office3D";
 import { LoopMenu, LOOPS } from "./SocialLoop";
+import Director from "./Director";
 
 /* ---------- small utils ---------- */
 function etHour(): number {
@@ -842,6 +843,7 @@ function useHash(): string {
 
 export default function App() {
   const hash = useHash();
+  if (hash === "#director") return <Director />;
   if (hash === "#loops") return <LoopMenu />;
   if (hash.startsWith("#loop")) {
     const id = hash.slice(1);

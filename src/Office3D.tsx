@@ -39,7 +39,7 @@ const CAMS: Record<CamMode, { pos: [number, number, number]; look: [number, numb
   desk:      { pos: [-1.2, 2.3, 5.0], look: [0.2, 1.35, -2] },
   merch:     { pos: [-7.2, 2.0, 4.2], look: [-10.2, 1.0, 5.9] },
   breakroom: { pos: [-4.6, 1.9, 4.4], look: [-7.6, 1.0, 6.4] },
-  legal:     { pos: [7.0, 2.1, 6.4],  look: [10.4, 1.2, 3.4] },
+  legal:     { pos: [7.2, 1.7, 7.6],  look: [10.2, 1.15, 5.0] },
   elevator:  { pos: [-9.9, 1.75, 0.05], look: [-12.4, 1.28, 0] },
   loop:      { pos: [-9.98, 1.72, 0.08], look: [-12.4, 1.26, 0] },
   boardroom: { pos: [82, 2.7, 5.4],   look: [82, 1.25, -1.6] },
@@ -65,7 +65,7 @@ const ELEV_SPOTS: [number, number][] = [[-12.2, -0.62], [-12.2, 0.62]];
 /* office points of interest for ambient wandering */
 const POI: [number, number][] = [[6.4, 6.0], [-7.6, 6.0], [-9.8, 5.2], [8.2, 4.2], [-8.6, -5.0], [-10.0, 1.2], [2.2, 6.2]];
 
-export interface CastPlacement { id: string; zone: ZoneId; slot: number; }
+export interface CastPlacement { id: string; zone: ZoneId; slot: number; at?: [number, number]; }
 export interface Office3DProps {
   mode: CamMode; speakerId?: string | null; placements?: CastPlacement[]; doorsOpen?: boolean;
   night?: boolean; ambient?: boolean; followId?: string; onFail?: () => void; className?: string;
@@ -142,7 +142,34 @@ interface CharRig {
   eyes: THREE.Group; arms: THREE.Group[]; mood: THREE.Mesh; ring: THREE.Mesh;
   deskPos: THREE.Vector3; idlePhase: number; still: boolean;
   target: THREE.Vector3 | null; home: THREE.Vector3; walkT: number; blinkAt: number;
+  idle: IdleStyle;
 }
+
+/** Per-character idle signature — the thing you recognize before you read the name tag. */
+interface IdleStyle {
+  bob: number;        // vertical idle amplitude
+  sway: number;       // body sway
+  fidget: number;     // arm micro-motion
+  headTurn: number;   // how much they look around
+  speed: number;      // walk speed
+  blinkGap: number;   // seconds between blinks
+}
+const IDLE: Record<string, IdleStyle> = {
+  // Max: anxious. Constant motion, fast blinks, hands never settle.
+  max:    { bob: 0.075, sway: 0.05,  fidget: 0.22, headTurn: 0.10, speed: 2.3, blinkGap: 1.7 },
+  // Linda: precise stillness. Minimal motion, slow deliberate head turns.
+  linda:  { bob: 0.022, sway: 0.008, fidget: 0.03, headTurn: 0.05, speed: 1.6, blinkGap: 4.2 },
+  // Roxy: controlled stillness. Even less than Linda, but she SCANS.
+  roxy:   { bob: 0.012, sway: 0.004, fidget: 0.01, headTurn: 0.22, speed: 1.0, blinkGap: 5.5 },
+  // Barry: fake authority. Big slow gestures, expansive, unhurried.
+  barry:  { bob: 0.05,  sway: 0.045, fidget: 0.16, headTurn: 0.07, speed: 1.4, blinkGap: 3.6 },
+  // Trixie: phone posture. Small quick motions, head down then up.
+  trixie: { bob: 0.055, sway: 0.03,  fidget: 0.18, headTurn: 0.14, speed: 2.1, blinkGap: 2.2 },
+  // Manny: measuring gestures. Arms wide, rhythmic, theatrical.
+  manny:  { bob: 0.06,  sway: 0.05,  fidget: 0.26, headTurn: 0.09, speed: 1.8, blinkGap: 3.0 },
+  // Evan: over-helpful. Bouncy, wanders, looks everywhere.
+  evan:   { bob: 0.085, sway: 0.035, fidget: 0.14, headTurn: 0.26, speed: 2.0, blinkGap: 2.6 },
+};
 
 function buildCharacter(id: string, dept: string) {
   const g = new THREE.Group();
@@ -539,7 +566,8 @@ export function Office3D({ mode, speakerId, placements = [], doorsOpen = false, 
       rigs[c.id] = { group: built.group, headG: built.headG, mouth: built.mouth, smile: built.smile,
         eyes: built.eyes, arms: built.arms, mood: built.mood, ring: built.ring,
         deskPos, idlePhase: i * 1.3, still: c.id === "roxy",
-        target: null, home: deskPos.clone(), walkT: 0, blinkAt: 2 + i * 0.7 };
+        target: null, home: deskPos.clone(), walkT: 0, blinkAt: 2 + i * 0.7,
+        idle: IDLE[c.id] ?? IDLE.evan };
     });
 
     /* ================= lights ================= */
@@ -589,8 +617,8 @@ export function Office3D({ mode, speakerId, placements = [], doorsOpen = false, 
           const e = ELEV_SPOTS[i % 2];
           r.group.position.set(e[0], 0, e[1]); r.group.rotation.y = Math.PI / 2; r.target = null;
         } else {
-          const dest = spotFor(p.zone, p.slot);
-          const sameZone = p.zone === "office";
+          const dest = p.at ? new THREE.Vector3(p.at[0], 0, p.at[1]) : spotFor(p.zone, p.slot);
+          const sameZone = p.zone === "office" && !p.at;   // explicit marks are director blocking: cut, don't walk
           if (sameZone && !reduced) { r.target = dest; }           // walk there
           else { r.group.position.copy(dest); r.target = null; }   // remote zones: cut (v0.6)
         }
@@ -659,11 +687,17 @@ export function Office3D({ mode, speakerId, placements = [], doorsOpen = false, 
           if (d < 0.12) { r.target = null; r.walkT = 0; }
           else {
             tmpV.normalize();
-            const speed = r.still ? 1.0 : 1.9;
+            const speed = r.idle.speed;
             r.group.position.addScaledVector(tmpV, speed * dt);
             r.group.rotation.y = Math.atan2(tmpV.x, tmpV.z);
             r.walkT += dt * 9;
           }
+        } else if (!talking && speaker && rigs[speaker] && rigs[speaker] !== r
+                   && rigs[speaker].group.position.distanceTo(r.group.position) < 8) {
+          // react: turn toward whoever is talking
+          tmpV.copy(rigs[speaker].group.position).sub(r.group.position);
+          const want = Math.atan2(tmpV.x, tmpV.z);
+          r.group.rotation.y += (want - r.group.rotation.y) * 0.035;
         } else if (talking) {
           // face nearest other cast member in scene, gently
           const other = Object.entries(rigs).find(([oid, or]) => oid !== id && or.group.position.distanceTo(r.group.position) < 5);
@@ -676,14 +710,20 @@ export function Office3D({ mode, speakerId, placements = [], doorsOpen = false, 
         const walking = r.target !== null;
         const bob = reduced ? 0 :
           walking ? Math.abs(Math.sin(r.walkT)) * 0.09
-          : Math.sin(t * (r.still ? 0.5 : 1.7) + r.idlePhase) * 0.045;
+          : Math.sin(t * (r.still ? 0.5 : 1.7) + r.idlePhase) * r.idle.bob;
         r.group.position.y = bob;
+        // body sway + head scanning: the per-character idle signature
+        if (!reduced && !walking) {
+          r.group.rotation.z = Math.sin(t * 0.9 + r.idlePhase) * r.idle.sway;
+          if (!talking) r.headG.rotation.y = Math.sin(t * 0.42 + r.idlePhase) * r.idle.headTurn;
+        }
         // arms: swing while walking, gesture while talking
         for (const [ai, arm] of r.arms.entries()) {
           const sx = ai === 0 ? -1 : 1;
           if (walking && !reduced) arm.rotation.x = Math.sin(r.walkT + ai * Math.PI) * 0.7;
-          else if (talking && !reduced) { arm.rotation.x = Math.sin(t * 7 + ai) * 0.35 - 0.3; }
-          else arm.rotation.x += (0 - arm.rotation.x) * 0.1;
+          else if (talking && !reduced) { arm.rotation.x = Math.sin(t * 7 + ai) * (0.3 + r.idle.fidget) - 0.3; }
+          else if (!reduced) { arm.rotation.x = Math.sin(t * 2.4 + ai * 2 + r.idlePhase) * r.idle.fidget * 0.35; }
+          else arm.rotation.x = 0;
           arm.rotation.z = sx * 0.42;
         }
         // face
@@ -696,7 +736,7 @@ export function Office3D({ mode, speakerId, placements = [], doorsOpen = false, 
           r.headG.rotation.z += (0 - r.headG.rotation.z) * 0.12;
         }
         // blink
-        if (t > r.blinkAt) { r.eyes.scale.y = 0.12; if (t > r.blinkAt + 0.12) { r.eyes.scale.y = 1; r.blinkAt = t + 2.4 + Math.random() * 3; } }
+        if (t > r.blinkAt) { r.eyes.scale.y = 0.12; if (t > r.blinkAt + 0.12) { r.eyes.scale.y = 1; r.blinkAt = t + r.idle.blinkGap + Math.random() * 1.5; } }
         r.ring.visible = talking;
         if (talking) r.ring.rotation.z = t * 1.6;
         r.mood.position.y = 2.5 + (reduced ? 0 : Math.sin(t * 2 + r.idlePhase) * 0.06);
@@ -735,9 +775,9 @@ export function Office3D({ mode, speakerId, placements = [], doorsOpen = false, 
         tp = tmpV.clone().set(fp.x + 2.6, 2.4, fp.z + 4.2);
         tl = fp.clone().setY(1.3);
       } else if (curMode === "clippan") {
-        const a = t * 0.07;
-        tp = new THREE.Vector3(Math.sin(a) * 12.5, 6.0 + Math.sin(t * 0.21) * 0.6, Math.cos(a) * 12.5 + 1.5);
-        tl = new THREE.Vector3(0, 1, 0);
+        const a = t * 0.06;
+        tp = new THREE.Vector3(Math.sin(a) * 7.5, 4.2 + Math.sin(t * 0.19) * 0.4, Math.cos(a) * 6.5 + 4.2);
+        tl = new THREE.Vector3(0, 1.25, -1.4);
       } else {
         const c = CAMS[curMode];
         tp = new THREE.Vector3(...c.pos); tl = new THREE.Vector3(...c.look);

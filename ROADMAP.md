@@ -17,8 +17,11 @@ Nothing on this roadmap is a financial commitment of any kind.*
 - [ ] Chambers (live HR hearings, audience jury)
 - [ ] First hand-sold sponsor arcs
 - [ ] LLM generation behind the SAME compiler/Linda/human gates (contract unchanged)
-- [ ] AI Vibe System / Soul File v0.1 — versioned identity schema with tests for identity
-      continuity, vibe regression, model routing, and a no-consciousness-claims lint (see issues)
+- [x] AI Vibe System / Soul File v0.1 → **v0.2 shipped**: identity constitution + checksum,
+      model-preference routing, regression prompts, and five build gates (voice integrity,
+      consciousness, financial, lore, learning-source)
+- [x] Director Mode (internal staging tool)
+- [ ] Soul File v0.3 — run the regression prompts against a live model and score drift
 - [ ] Day-30 cliffhanger; badge WAITLIST opens (email only; no pricing, no promises)
 
 ## Later — only after the go/no-go gate (retention, participation, sponsors, counsel)

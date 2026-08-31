@@ -10,12 +10,13 @@ interface Step {
   lt?: [string, string];
   floor?: number; redact?: boolean; dial?: number; flash16?: boolean;
   doors?: "open" | "closed"; card?: boolean; reset?: boolean; speaker?: string | null;
+  gag?: string;      // in-frame visual sting: the one strong gag per route
 }
 interface LoopCfg {
   id: string; title: string; camLabel: string; cam: CamMode; night: boolean;
   placements: CastPlacement[]; doorsAnimated?: boolean;
   timeline: Step[]; loopMs: number;
-  card: { h1: string; sub: string };
+  card: { h1: string; sub: string; kicker?: string };
   ticker: string[];
 }
 
@@ -30,7 +31,7 @@ export const LOOPS: LoopCfg[] = [
     placements: [{ id: "max", zone: "office", slot: 0 }, { id: "roxy", zone: "office", slot: 1 }],
     doorsAnimated: true, loopMs: 27300,
     ticker: ["09:22 MEMO 41 FILED — READ IT", "THE PRODUCT REMAINS UNNAMED", "SOMEBODY'S GETTING FIRED ON FRIDAY — BY YOU", "AN EIGHTH FILE EXISTS"],
-    card: { h1: "NOBODY HERE KNOWS WHAT THE COMPANY DOES.", sub: "WATCHING IS FREE. NOTHING IS FOR SALE. STANDUP AT 9:15." },
+    card: { kicker: "CAM 04 · ELEVATOR, CAR A", h1: "NOBODY HERE KNOWS WHAT THE COMPANY DOES.", sub: "SEVEN AI EMPLOYEES · ONE FLOOR · STANDUP AT 9:15" },
     timeline: [
       { at: 0, reset: true, doors: "closed", floor: 15, dial: 4, lt: ["MAX MARGIN", "HEAD OF TRADING · 0-FOR-EVERYTHING"] },
       { at: 700, doors: "open" },
@@ -43,6 +44,7 @@ export const LOOPS: LoopCfg[] = [
       { at: 14300, line: { who: "ROXY", txt: "…Filed that too." }, speaker: "roxy", lt: ["ROXY RISK", "SECURITY & RISK · 2-FOR-2"], floor: 5, dial: 4 },
       { at: 16600, line: { who: null, txt: "Floor 3. The longest floor in the building." }, speaker: null, floor: 3 },
       { at: 18300, line: { who: "MAX", txt: "…Was I the pattern?" }, speaker: "max", lt: ["MAX MARGIN", "HEAD OF TRADING · 0-FOR-EVERYTHING"], floor: 2 },
+      { at: 19700, gag: "CAREER RECORD UPDATED · 0-FOR-5" },
       { at: 20600, doors: "closed", floor: 1, speaker: null, line: { who: null, txt: "Ding. She exits without answering." } },
       { at: 22000, card: true },
       { at: 26500, reset: true, doors: "closed", floor: 15, dial: 4, card: false },
@@ -52,7 +54,7 @@ export const LOOPS: LoopCfg[] = [
     id: "loop-office", title: "Office Wide Chaos", camLabel: "CAM 01 — WIDE (ORBIT)", cam: "clippan", night: false,
     placements: [], loopMs: 24500,
     ticker: ["BUDGET: $0.00 — “A DONATION TO OUR FUTURE”", "THREAT LEVEL: 4 AND HOLDING", "MERCH DROP THURSDAY — THE BAR IS THE SHIRT"],
-    card: { h1: "SEVEN AI EMPLOYEES. ONE FLOOR. ZERO KNOWN PRODUCTS.", sub: "FLOOR15 — A 24/7 LIVE AI OFFICE SHOW. WATCHING IS FREE." },
+    card: { kicker: "CAM 01 · THE FLOOR", h1: "SEVEN AI EMPLOYEES. ONE FLOOR. ZERO KNOWN PRODUCTS.", sub: "IT'S NEVER A RERUN, BECAUSE IT NEVER STOPS" },
     timeline: [
       { at: 0, reset: true, dial: 4, lt: ["HOLDCO GLOBAL", "FLOOR 15 · A COMPANY THAT DOES SOMETHING"] },
       { at: 2200, line: { who: "BARRY", txt: "We make BELIEVERS." }, speaker: "barry", lt: ["BARRY BOARDROOM", "CEO* · *TITLE SELF-CONFERRED"] },
@@ -60,16 +62,17 @@ export const LOOPS: LoopCfg[] = [
       { at: 8800, line: { who: "MAX", txt: "This is the market BEGGING, chief." }, speaker: "max", lt: ["MAX MARGIN", "0-FOR-EVERYTHING"] },
       { at: 12200, line: { who: "ROXY", txt: "Calm is pre-incident behavior. Filing now." }, speaker: "roxy", lt: ["ROXY RISK", "2-FOR-2 · UNTHANKED"], dial: 5 },
       { at: 15600, line: { who: "EVAN", txt: "Quick question — is 'the mainframe' load-bearing?" }, speaker: "evan", lt: ["EVAN INTERN", "BADGES: 6 · UNPAID"], flash16: true },
+      { at: 17200, gag: "Q3 BUDGET REMAINING · $0.00" },
       { at: 19000, card: true },
       { at: 23800, reset: true, dial: 4, card: false },
     ],
   },
   {
     id: "loop-legal", title: "Legal Says No", camLabel: "CAM 07 — LEGAL", cam: "legal", night: false,
-    placements: [{ id: "linda", zone: "office", slot: 0 }, { id: "manny", zone: "office", slot: 1 }],
+    placements: [{ id: "linda", zone: "office", slot: 0, at: [10.9, 4.5] }, { id: "manny", zone: "office", slot: 1, at: [9.3, 5.4] }],
     loopMs: 23500,
     ticker: ["LEGAL: 13 IDEAS REVIEWED, 1 APPROVED (A BOX)", "THE RED PEN IS OUT"],
-    card: { h1: "OUR CONTENT-SAFETY LAYER IS A CHARACTER NAMED LINDA.", sub: "THE REDACTION BAR IS THE BIT. THE BIT HAS UNIT TESTS." },
+    card: { kicker: "CAM 07 · LEGAL", h1: "OUR CONTENT-SAFETY LAYER IS A CHARACTER NAMED LINDA.", sub: "THE REDACTION BAR IS THE BIT. THE BIT HAS UNIT TESTS." },
     timeline: [
       { at: 0, reset: true, lt: ["MANNY MERCH", "MERCHANDISE · DROP LOADING"] },
       { at: 1600, line: { who: "MANNY", txt: "Hear me out. Hear me OUT. The slogan is—" }, speaker: "manny" },
@@ -79,7 +82,8 @@ export const LOOPS: LoopCfg[] = [
       { at: 10000, line: { who: "MANNY", txt: "…What if the shirt is just the redaction bar itself." }, speaker: "manny" },
       { at: 13400, line: { who: null, txt: "A very long pause. Somewhere, a fish changes direction." }, speaker: null },
       { at: 15800, line: { who: "LINDA", txt: "…Approved." }, speaker: "linda" },
-      { at: 17400, line: { who: null, txt: "It sells out in 19 minutes. Nobody learns anything." } },
+      { at: 16600, gag: "LEGAL APPROVALS THIS QUARTER · 1" },
+      { at: 17600, line: { who: null, txt: "It sells out in 19 minutes. Nobody learns anything." } },
       { at: 19000, card: true },
       { at: 22800, reset: true, card: false },
     ],
@@ -89,7 +93,7 @@ export const LOOPS: LoopCfg[] = [
     placements: [{ id: "trixie", zone: "cafe", slot: 0 }, { id: "evan", zone: "cafe", slot: 1 }],
     loopMs: 22500,
     ticker: ["OVERHEARD AT THE CAFE — ALLEGEDLY", "GLORIA IS AWARE OF TWO OF THE BURNERS"],
-    card: { h1: "THE BUILDING IS BIGGER THAN THE OFFICE.", sub: "LOBBY CAFE · ROOFTOP · RESIDENCES · FLOOR 16 (LOCKED)" },
+    card: { kicker: "CAM 09 · LOBBY CAFE", h1: "THE BUILDING IS BIGGER THAN THE OFFICE.", sub: "LOBBY CAFE · ROOFTOP · RESIDENCES · FLOOR 16 (LOCKED)" },
     timeline: [
       { at: 0, reset: true, lt: ["TRIXIE TREND", "HEAD OF SOCIAL · OFF THE CLOCK (NEVER)"] },
       { at: 1800, line: { who: "TRIXIE", txt: "So the rumor is someone saw a SECOND coffee machine box in the loading dock." }, speaker: "trixie" },
@@ -97,6 +101,7 @@ export const LOOPS: LoopCfg[] = [
       { at: 9400, line: { who: "TRIXIE", txt: "Evan. It's a machine. It doesn't 'know' things." }, speaker: "trixie" },
       { at: 12600, line: { who: "EVAN", txt: "…That's what the first one thought." }, speaker: "evan" },
       { at: 15400, line: { who: null, txt: "Trixie opens her phone. This is going in the group chat." }, speaker: null },
+      { at: 16400, gag: "RUMOR LOGGED · SOURCE: A GUY" },
       { at: 17800, card: true },
       { at: 21800, reset: true, card: false },
     ],
@@ -106,7 +111,7 @@ export const LOOPS: LoopCfg[] = [
     placements: [{ id: "linda", zone: "rooftop", slot: 0 }, { id: "max", zone: "rooftop", slot: 1 }],
     loopMs: 23500,
     ticker: ["21:00 — AFTER HOURS", "EVERYTHING UP HERE IS PRIVILEGED"],
-    card: { h1: "THE OFFICE NEVER CLOSES. IT JUST DIMS.", sub: "AFTER HOURS · 21:00 · THE ROOFTOP KNOWS EVERYTHING" },
+    card: { kicker: "CAM 12 · ROOFTOP", h1: "THE OFFICE NEVER CLOSES. IT JUST DIMS.", sub: "AFTER HOURS · 21:00 · THE ROOFTOP KNOWS EVERYTHING" },
     timeline: [
       { at: 0, reset: true, lt: ["MAX MARGIN", "OFF THE CLOCK · STILL WEARING THE VEST"] },
       { at: 2000, line: { who: "MAX", txt: "Week one, chief. We survived." }, speaker: "max" },
@@ -115,6 +120,7 @@ export const LOOPS: LoopCfg[] = [
       { at: 11400, line: { who: null, txt: "A long pause. The city hums. One window on 16 is lit." }, speaker: null, flash16: true },
       { at: 14600, line: { who: "LINDA", txt: "File it under morale." }, speaker: "linda" },
       { at: 17200, line: { who: null, txt: "She almost smiles. Three witnesses. Zero corroboration." } },
+      { at: 18100, gag: "MORALE · FILED" },
       { at: 19000, card: true },
       { at: 22800, reset: true, card: false },
     ],
@@ -124,7 +130,7 @@ export const LOOPS: LoopCfg[] = [
     placements: [{ id: "evan", zone: "hallway", slot: 0 }],
     loopMs: 21500,
     ticker: ["02:07 — BADGE #4 USED AGAIN", "GAIT ANALYSIS: NOT EVAN"],
-    card: { h1: "AN EIGHTH FILE EXISTS.", sub: "THE RESIDENCES · 2:07 AM · SOMEONE HAS A KEY THEY SHOULDN'T" },
+    card: { kicker: "CAM 15 · RESIDENCES", h1: "AN EIGHTH FILE EXISTS.", sub: "02:07 · SOMEONE HAS A KEY THEY SHOULDN'T" },
     timeline: [
       { at: 0, reset: true, lt: ["CAM 15", "RESIDENCES · MOTION-ACTIVATED"] },
       { at: 1800, line: { who: null, txt: "2:07 AM. The hallway light flickers. It has always flickered. Probably." } },
@@ -132,6 +138,7 @@ export const LOOPS: LoopCfg[] = [
       { at: 9400, line: { who: null, txt: "Behind him: apartment 15F. The door is ajar. Light leaks out." }, speaker: null },
       { at: 13000, line: { who: null, txt: "Nobody lives in 15F." } },
       { at: 15400, line: { who: null, txt: "A badge reader, somewhere, goes green." } },
+      { at: 16300, gag: "BADGE #4 · GAIT MISMATCH" },
       { at: 17400, card: true },
       { at: 20800, reset: true, card: false },
     ],
@@ -140,13 +147,14 @@ export const LOOPS: LoopCfg[] = [
     id: "loop-16", title: "Floor 16", camLabel: "CAM ?? — UNREGISTERED FEED", cam: "floor16", night: true,
     placements: [], loopMs: 20500,
     ticker: ["FOOTSTEP SETS COUNTED: 12 (WAS 4)", "THE FEED IS NOT ON THE CAMERA MANIFEST"],
-    card: { h1: "THE FOOTSTEPS HAVE A PATTERN.", sub: "FLOOR 16 · OCCUPANCY UNKNOWN · SEE MEMO 41, TAB 7" },
+    card: { kicker: "CAM ?? · UNREGISTERED", h1: "THE FOOTSTEPS HAVE A PATTERN.", sub: "FLOOR 16 · OCCUPANCY UNKNOWN · PATTERNS ARE PEOPLE" },
     timeline: [
       { at: 0, reset: true, lt: ["UNREGISTERED FEED", "SOURCE: UNKNOWN · DO NOT CIRCULATE"] },
       { at: 2200, line: { who: null, txt: "One desk lamp. It was off yesterday." } },
       { at: 6000, line: { who: null, txt: "The shapes against the wall: four desks. And something with rollers." } },
       { at: 9800, line: { who: null, txt: "A red light, blinking. Counting something." }, flash16: true },
       { at: 13400, line: { who: null, txt: "Roxy has had this feed for months. She hasn't told anyone. She's filed it." } },
+      { at: 14900, gag: "MEMO 41 · TAB 7 · PRE-WRITTEN" },
       { at: 16400, card: true },
       { at: 19800, reset: true, card: false },
     ],
@@ -164,6 +172,7 @@ export default function SocialLoop({ loopId = "loop" }: { loopId?: string }) {
   const [flash16, setFlash16] = useState(false);
   const [card, setCard] = useState(false);
   const [speaker, setSpeaker] = useState<string | null>(null);
+  const [gag, setGag] = useState<string | null>(null);
   const [gl3d, setGl3d] = useState(true);
   const timers = useRef<number[]>([]);
 
@@ -178,7 +187,8 @@ export default function SocialLoop({ loopId = "loop" }: { loopId?: string }) {
     const run = () => {
       for (const s of cfg.timeline) {
         timers.current.push(window.setTimeout(() => {
-          if (s.reset) { setLines([]); setRedact(false); setFlash16(false); setSpeaker(null); }
+          if (s.reset) { setLines([]); setRedact(false); setFlash16(false); setSpeaker(null); setGag(null); }
+          if (s.gag) { setGag(s.gag); timers.current.push(window.setTimeout(() => setGag(null), 2800)); }
           if (s.doors) setDoors(s.doors);
           if (s.floor !== undefined) setFloor(s.floor);
           if (s.lt) setLt(s.lt);
@@ -217,6 +227,7 @@ export default function SocialLoop({ loopId = "loop" }: { loopId?: string }) {
             <div style={{ position: "absolute", inset: 0, background: "var(--ink2)" }} />
           )}
           <div className={"car-redact" + (redact ? " on" : "")}>REDACTED</div>
+          {gag && <div className="loop-gag">{gag}</div>}
           <div className="loop-lines">
             {lines.map((l, i) => (
               <div className="eline show" key={i + l.txt}>
@@ -247,9 +258,11 @@ export default function SocialLoop({ loopId = "loop" }: { loopId?: string }) {
         </div>
 
         <div className={"loop-card" + (card ? " show" : "")}>
+          {cfg.card.kicker && <span className="cardkicker">{cfg.card.kicker}</span>}
           <h1>{cfg.card.h1}</h1>
           <span className="wm">{SHOW.name} — A 24/7 LIVE AI OFFICE SHOW</span>
           <span className="sub">{cfg.card.sub}</span>
+          <span className="cardurl">FLOOR15 · WATCH FREE · NOTHING IS FOR SALE</span>
         </div>
       </div>
     </div>

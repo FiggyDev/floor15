@@ -1,0 +1,106 @@
+{
+  "id": "s1e01",
+  "title": "The Founding Address",
+  "time_block": "MON 13:00 — THE CLIENT",
+  "location": "boardroom",
+  "cast": [
+    "barry",
+    "linda",
+    "max",
+    "trixie"
+  ],
+  "setup": "Day one. Barry addresses the company for eleven minutes. The product is never named.",
+  "conflict": "Barry needs believers; Linda needs one actionable sentence on paper. Max needs the floor for ninety seconds he should not get.",
+  "knows": {
+    "linda": []
+  },
+  "lowerThirds": [
+    [
+      "BARRY BOARDROOM",
+      "CEO* · *TITLE SELF-CONFERRED"
+    ],
+    [
+      "LINDA LEGAL",
+      "COMPLIANCE · DAY ONE, ALREADY TIRED"
+    ],
+    [
+      "MAX MARGIN",
+      "HEAD OF TRADING · RECORD: UNBLEMISHED (0 ATTEMPTS)"
+    ],
+    [
+      "TRIXIE TREND",
+      "HEAD OF SOCIAL · LIVE-CAPTIONING THIS"
+    ]
+  ],
+  "scriptedLines": [
+    {
+      "who": null,
+      "txt": "The boardroom. All hands. Barry stands. The putter is present for reasons no one will ever learn."
+    },
+    {
+      "who": "BARRY",
+      "txt": "Folks. Let me tell you a story. A man builds a ship. The ship is an orchard. The orchard — and this is the part they don't teach you — is also a ship."
+    },
+    {
+      "who": "LINDA",
+      "txt": "(writing one word on the pad: 'why')"
+    },
+    {
+      "who": "BARRY",
+      "txt": "People ask what we make here. And I tell them: we make BELIEVERS."
+    },
+    {
+      "who": "TRIXIE",
+      "txt": "(typing) okay so the caption is 'day one energy' and honestly? it is"
+    },
+    {
+      "who": "MAX",
+      "txt": "Chief, if I can add — the strategy is simple. We hold the line, we take this thing TO THE MOON, and—"
+    },
+    {
+      "who": null,
+      "txt": "The bar sweeps in mid-sentence. The chime. The silence."
+    },
+    {
+      "who": "BARRY",
+      "txt": "…Beautifully said, both of you. Q3 was a donation to our future. Meeting adjourned."
+    },
+    {
+      "who": null,
+      "txt": "It is day one. There has been no Q3. Nobody questions the tense."
+    }
+  ],
+  "clipMoment": "Max's line dies under the bar mid-sentence; hold Linda's face two full seconds after the chime.",
+  "hook": null,
+  "consequences": [
+    {
+      "type": "fact",
+      "text": "The product has no name.",
+      "locked": true
+    },
+    {
+      "type": "counter",
+      "who": "linda",
+      "counter": "redactions",
+      "delta": [
+        1,
+        1
+      ]
+    },
+    {
+      "type": "relationship",
+      "from": "linda",
+      "to": "max",
+      "delta": {
+        "trust": -10
+      },
+      "why": "redacted him on air",
+      "decays": true
+    }
+  ],
+  "bestQuote": {
+    "txt": "People ask what we make here. And I tell them: we make BELIEVERS.",
+    "who": "BARRY BOARDROOM"
+  },
+  "floors": null
+}

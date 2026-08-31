@@ -1,0 +1,33 @@
+FLOOR 15 — NOTICE (what the MIT license does and does not cover)
+
+LICENSED UNDER MIT (see LICENSE):
+  The source code in this repository — the site app, the agent engine, build
+  scripts, schemas, the data contract, and tests. Fork it, learn from it, build
+  your own show engine with it. Genuinely: go make a weird thing.
+
+NOT LICENSED — ALL RIGHTS RESERVED:
+  The FLOOR 15 creative universe is not part of the MIT grant. That includes,
+  without limitation: the FLOOR 15 name and logos; HoldCo Global, Blackline
+  Vertical, and all fictional entities; character names, personalities, voices,
+  bios, secrets, and mind-file creative content; lore, canon, storylines,
+  scripts, scene text, and episode content; the show bible and art direction;
+  merch slogans and designs; and the fictional universe as a whole. Example
+  data in this repo (mind files, seeds, scene packages, decks, canon entries)
+  is included to make the software runnable and readable — it remains creative
+  content, not MIT-licensed material.
+
+NO IMPLIED AFFILIATION:
+  You may not present forks, derivatives, tokens, products, or accounts as
+  official FLOOR 15 works, or otherwise imply affiliation with or endorsement
+  by the project.
+
+NO DECEPTIVE USE OF THE ADDRESS POLICY:
+  docs/contracts/ADDRESSES.md and any future address records are informational
+  safety documents. They are not a license to impersonate the project, and
+  reproducing or imitating them to lend credibility to any token, address, or
+  sale is exactly the deception they exist to prevent. While that file says
+  NOT DEPLOYED, every claimed contract address is fake.
+
+If you want to do something the reserved list blocks — a fan work, a
+collaboration, an academic use — open an issue and ask. Linda reviews
+everything, but she has been known to approve things. Twice.

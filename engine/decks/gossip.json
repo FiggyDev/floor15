@@ -1,0 +1,12 @@
+{
+  "note": "Showrunner-authored. The dice pick WHEN a card fires and WHO spreads it — never write a new card at roll time. Cards must not touch locked facts or secrets marked hold.",
+  "cards": [
+    { "id": "g01", "text": "Someone saw a second coffee machine box in the loading dock. Unopened. Waiting." },
+    { "id": "g02", "text": "Barry's putter has a name. Nobody will say it on the record." },
+    { "id": "g03", "text": "The vending machine dispensed twice at 2am. Nobody was there." },
+    { "id": "g04", "text": "Linda smiled on the rooftop last Thursday. Three witnesses. Zero corroboration." },
+    { "id": "g05", "text": "There's a light on 16 that turns off exactly when you look at it." },
+    { "id": "g06", "text": "Manny has a locked drawer. It rattles." },
+    { "id": "g07", "text": "Evan's sixth badge opens a door nobody has found yet." }
+  ]
+}

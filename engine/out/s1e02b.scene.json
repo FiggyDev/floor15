@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "id": "s1e02b",
+  "title": "FILED EARLY",
+  "time_block": "TUE 16:10 — INCIDENT WINDOW",
+  "location": "elevator",
+  "cast": [
+    "max",
+    "roxy"
+  ],
+  "setup": "The ride down, after the budget. Fourteen floors. She holds the memo.",
+  "conflict": "Max needs absolution. Roxy needs acknowledgment. Neither gives.",
+  "floors": {
+    "from": 15,
+    "to": 1
+  },
+  "lowerThirds": [
+    [
+      "MAX MARGIN",
+      "HEAD OF TRADING · 0-FOR-1"
+    ],
+    [
+      "ROXY RISK",
+      "SECURITY & RISK · 2-FOR-2"
+    ]
+  ],
+  "lines": [
+    {
+      "who": null,
+      "txt": "Car descends. Fourteen floors of silence scheduled. Two used."
+    },
+    {
+      "who": "MAX",
+      "txt": "You filed it before I even did it."
+    },
+    {
+      "who": "ROXY",
+      "txt": "I file early."
+    },
+    {
+      "who": "MAX",
+      "txt": "That's not confidence in me, chief."
+    },
+    {
+      "who": "ROXY",
+      "txt": "It's confidence in patterns."
+    },
+    {
+      "who": null,
+      "txt": "Floor 3. The longest floor in the building."
+    },
+    {
+      "who": "MAX",
+      "txt": "…Was I the pattern?"
+    },
+    {
+      "who": null,
+      "txt": "Ding. She exits without answering. He rides back up to ask again. She has taken the stairs."
+    }
+  ],
+  "safety": {
+    "status": "PASS",
+    "hits": []
+  },
+  "bestQuote": {
+    "txt": "…Was I the pattern?",
+    "who": "MAX MARGIN, FLOOR 3"
+  },
+  "clipMoment": "The whole ride. The ding lands like a verdict.",
+  "hook": null,
+  "proposedConsequences": [
+    {
+      "type": "relationship",
+      "from": "max",
+      "to": "roxy",
+      "delta": {
+        "trust": -5
+      },
+      "why": "Memo 41 slid across the table",
+      "decays": true
+    },
+    {
+      "type": "relationship",
+      "from": "max",
+      "to": "roxy",
+      "delta": {
+        "respect": 5
+      },
+      "why": "'It's confidence in patterns' landed",
+      "decays": false,
+      "hidden": true
+    }
+  ],
+  "canonRefs": [
+    "REL: max→roxy trust-5 (Memo 41 slid across the table)",
+    "REL: max→roxy respect+5 ('It's confidence in patterns' landed)"
+  ],
+  "generatedAt": "2026-08-31T00:44:14.964Z",
+  "airedAt": null,
+  "status": "draft",
+  "approved": false
+}

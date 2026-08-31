@@ -1,0 +1,16 @@
+{
+  "name": "floor15-engine",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "FLOOR 15 agent/story engine v0 \u2014 minds, canon ledger, scene compiler, dice, Linda safety pass. No tokens, no payments, no wallets, nothing on-chain.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "demo": "node src/engine.mjs demo",
+    "dice": "node src/engine.mjs dice",
+    "validate": "node src/engine.mjs validate",
+    "export-site": "node src/engine.mjs export-site",
+    "approve": "node src/engine.mjs approve",
+    "demo:site-data": "node src/engine.mjs demo && node src/engine.mjs approve s1e01 && node src/engine.mjs export-site && echo '--- frontend consumes: ../src/generated/scenes.json (see npm run build in ..)'"
+  }
+}

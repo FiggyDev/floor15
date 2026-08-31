@@ -1,0 +1,9 @@
+{"id":"cv-0001","t":"2026-09-01T13:07:00-04:00","type":"fact","text":"The product has no name.","source":"s1e01","locked":true,"guards":[{"forbidPatterns":["the product,? (?:which|that) is (?:a|an) \\w+"],"note":"no scene may state what the product is"}]}
+{"id":"cv-0002","t":"2026-09-01T13:07:30-04:00","type":"counter","who":"linda","counter":"redactions","delta":[1,1],"source":"s1e01"}
+{"id":"cv-0003","t":"2026-09-01T13:08:00-04:00","type":"relationship","from":"linda","to":"max","delta":{"trust":-10},"why":"redacted him on air","source":"s1e01","decays":true}
+{"id":"cv-0004","t":"2026-09-02T11:40:00-04:00","type":"fact","text":"The quarterly budget is $0.00.","source":"s1e02","locked":true,"guards":[{"forbidPatterns":["budget (?:is|of) \\$[1-9]"],"note":"the budget is zero until a canon event restores it"}]}
+{"id":"cv-0005","t":"2026-09-02T11:41:00-04:00","type":"counter","who":"max","counter":"predictions","delta":[0,1],"source":"s1e02"}
+{"id":"cv-0006","t":"2026-09-02T11:42:00-04:00","type":"strike","who":"max","text":"deployed entire quarterly budget before lunch, day two","source":"s1e02"}
+{"id":"cv-0007","t":"2026-09-02T16:14:00-04:00","type":"relationship","from":"max","to":"roxy","delta":{"trust":-5},"why":"Memo 41 slid across the table","source":"s1e02b","decays":true}
+{"id":"cv-0008","t":"2026-09-02T16:14:30-04:00","type":"relationship","from":"max","to":"roxy","delta":{"respect":5},"why":"'It's confidence in patterns' landed","source":"s1e02b","decays":false,"hidden":true}
+{"id":"cv-0009","t":"2026-09-06T15:02:00-04:00","type":"mystery","text":"The elevator's 16 button flickered once, unprovoked.","resolution":null,"source":"s1e06"}

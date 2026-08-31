@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-07",
+  "elevator_pairing": {
+    "a": "linda",
+    "b": "max",
+    "score": 10
+  },
+  "gossip": {
+    "card": "g02",
+    "spreader": "evan"
+  },
+  "mood_swing": {
+    "who": "trixie",
+    "axis": "confidence",
+    "delta": -6
+  },
+  "bad_idea": {
+    "card": "b01",
+    "pitcher": "barry"
+  },
+  "accidental_leak": false,
+  "secret_meeting": false,
+  "late_night_message": null
+}

@@ -10,6 +10,7 @@ import {
 import { engineSceneCards, engineElevScenes, type EngineSceneCard } from "./engineScenes";
 import { CharacterSprite, spriteIdFor } from "./sprites";
 import SocialLoop from "./SocialLoop";
+import { Office3D, type CamMode } from "./Office3D";
 
 /* ---------- small utils ---------- */
 function etHour(): number {
@@ -122,10 +123,12 @@ function Station({ c, speaking, line }: { c: CastMember; speaking: boolean; line
   );
 }
 
-function LiveFloor() {
+function LiveFloor({ night }: { night: boolean }) {
   const [lines, setLines] = useState(() => CAST.map((c) => c.bubble[0]));
   const [speaker, setSpeaker] = useState(0);
   const [dial, setDial] = useState(4);
+  const [gl3d, setGl3d] = useState(true);
+  const [cam, setCam] = useState<CamMode>("wide");
   const tick = useRef(0);
 
   useEffect(() => {
@@ -161,15 +164,33 @@ function LiveFloor() {
           Seven desks, one bullpen. Speech bubbles are live. Moods are real. One of these people is always
           in frame and you never notice her.
         </p>
-        <div className="stage">
-          <div className="stage-wall">
-            <div className="stage-window"><span className="f16light" /></div>
+        {gl3d ? (
+          <div className="stage3d">
+            <Office3D mode={cam} speakerId={CAST[speaker].id} night={night} onFail={() => setGl3d(false)} className="stage3d-canvas" />
+            <span className="stage-onair">● REC</span>
+            <div className="camswitch">
+              {(["wide", "desk", "boardroom", "legal", "elevator"] as CamMode[]).map((m) => (
+                <button key={m} className={"cambtn" + (cam === m ? " on" : "")} onClick={() => setCam(m)}>
+                  CAM · {m.toUpperCase()}
+                </button>
+              ))}
+            </div>
+            <div className="caption3d">
+              <span className="cap-who" style={{ color: DEPT[CAST[speaker].dept].c }}>{CAST[speaker].name}</span>
+              <span className="cap-line">{lines[speaker]}</span>
+            </div>
           </div>
-          <span className="stage-onair">● REC</span>
-          <div className="stations">
-            {CAST.map((c, i) => <Station key={c.id} c={c} speaking={speaker === i} line={lines[i]} />)}
+        ) : (
+          <div className="stage">
+            <div className="stage-wall">
+              <div className="stage-window"><span className="f16light" /></div>
+            </div>
+            <span className="stage-onair">● REC</span>
+            <div className="stations">
+              {CAST.map((c, i) => <Station key={c.id} c={c} speaking={speaker === i} line={lines[i]} />)}
+            </div>
           </div>
-        </div>
+        )}
         <div className="widgetrow">
           <div className="widget">
             <h3>THREAT LEVEL — R. RISK</h3>
@@ -225,8 +246,9 @@ function RedactableText({ txt }: { txt: string }) {
   );
 }
 
-function ElevatorCam() {
+function ElevatorCam({ night }: { night: boolean }) {
   const [st, setSt] = useState<ElevState>(() => ({ scene: ALL_ELEV[0], shown: 0, floor: ALL_ELEV[0].from }));
+  const [gl3d, setGl3d] = useState(true);
   const idxRef = useRef(0);
 
   useEffect(() => {
@@ -283,15 +305,23 @@ function ElevatorCam() {
             <span className="camlabel"><span className="rec">●&nbsp;REC</span>&nbsp;&nbsp;ELEVATOR — CAR&nbsp;A</span>
             <span className="floorcount num">{st.floor}</span>
           </div>
-          <div className={"carview" + (doorsOpen ? " doors-open" : "")}>
-            <div className="car-inner">
-              {carCast.map((id) => (
-                <CharacterSprite key={id} id={id} size={132} talking={speakerId === id} />
-              ))}
+          {gl3d ? (
+            <div className="carview3d">
+              <Office3D mode="elevator" speakerId={speakerId} carCast={carCast} doorsOpen={doorsOpen}
+                night={night} onFail={() => setGl3d(false)} />
+              <div className={"car-redact" + (redactOn ? " on" : "")}>REDACTED</div>
             </div>
-            <div className={"car-redact" + (redactOn ? " on" : "")}>REDACTED</div>
-            <div className="door l" /><div className="door r" />
-          </div>
+          ) : (
+            <div className={"carview" + (doorsOpen ? " doors-open" : "")}>
+              <div className="car-inner">
+                {carCast.map((id) => (
+                  <CharacterSprite key={id} id={id} size={132} talking={speakerId === id} />
+                ))}
+              </div>
+              <div className={"car-redact" + (redactOn ? " on" : "")}>REDACTED</div>
+              <div className="door l" /><div className="door r" />
+            </div>
+          )}
           <div className="elev-body" aria-live="polite">
             {visible.map((l, i) => (
               <div className={"eline show" + (l.interruption ? " interrupt" : "")} key={st.scene.title + (st.shown - visible.length + i)}>
@@ -834,8 +864,8 @@ function SitePage() {
       <Rail active={active} />
       <main>
         <Hero countdown={countdown} />
-        <LiveFloor />
-        <ElevatorCam />
+        <LiveFloor night={night} />
+        <ElevatorCam night={night} />
         <CastSection />
         <ScenesSection />
         <WeekSection />

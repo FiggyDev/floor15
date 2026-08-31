@@ -7,9 +7,9 @@
     --red:#E8322B; --green:#2FA36B;
     --d-trading:#D8362A; --d-marketing:#E23E8E; --d-legal:#1F3A63; --d-hr:#6B7436;
     --d-merch:#E07B1F; --d-night:#7B3FD1; --d-sec:#55606B; --d-ops:#C99A2E; --d-intern:#2FA36B;
-    --f-chyron:'Oswald',system-ui,'Arial Narrow',sans-serif;
-    --f-body:'Archivo',system-ui,-apple-system,sans-serif;
-    --f-mono:'IBM Plex Mono','SF Mono',ui-monospace,monospace;
+    --f-chyron:'Bricolage Grotesque',system-ui,'Arial Narrow',sans-serif;
+    --f-body:'Instrument Sans',system-ui,-apple-system,sans-serif;
+    --f-mono:'Space Mono','SF Mono',ui-monospace,monospace;
     --rail-w:74px; --maxw:1180px;
   }
   html.night{
@@ -31,7 +31,7 @@
     transition:background .5s,color .5s;
   }
   ::selection{background:var(--brass); color:var(--ink)}
-  h1,h2,h3,h4{font-family:var(--f-chyron); text-transform:uppercase; line-height:1.05; margin:0; text-wrap:balance; font-weight:600}
+  h1,h2,h3,h4{font-family:var(--f-chyron); text-transform:uppercase; line-height:1.02; margin:0; text-wrap:balance; font-weight:800; letter-spacing:-.01em}
   a{color:inherit}
   button{font:inherit; cursor:pointer}
   button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--brass); outline-offset:2px}
@@ -98,7 +98,8 @@
   .hero h1 .rd::after{content:"REDACTED"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--brass-bright); font-size:.28em; letter-spacing:.35em; font-family:var(--f-mono)}
   .hero-sub{margin:20px 0 0; max-width:58ch; font-size:17.5px; color:var(--walnut-soft)}
   .hero-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:26px; align-items:center}
-  .btn{font-family:var(--f-chyron); text-transform:uppercase; letter-spacing:.12em; font-size:14px; padding:12px 22px; border:none; text-decoration:none; display:inline-block}
+  .btn{font-family:var(--f-chyron); font-weight:700; text-transform:uppercase; letter-spacing:.1em; font-size:14px; padding:12px 24px; border:none; text-decoration:none; display:inline-block; transform:skewX(-6deg)}
+  .btn>*{display:inline-block; transform:skewX(6deg)}
   .btn-ink{background:var(--ink); color:var(--on-ink)} .btn-ink:hover{background:var(--ink2); color:var(--brass-bright)}
   .btn-ghost{background:none; border:1px solid var(--walnut); color:var(--walnut)} .btn-ghost:hover{border-color:var(--brass); color:var(--brass-dim)}
   .countdown{font-family:var(--f-mono); font-size:13px; color:var(--walnut-soft)}
@@ -107,7 +108,7 @@
   /* ============ section scaffolding ============ */
   section{padding:58px 0; border-bottom:1px solid var(--line)}
   .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px; flex-wrap:wrap}
-  .sec-head h2{font-size:clamp(26px,3.4vw,40px); color:var(--walnut)}
+  .sec-head h2{font-size:clamp(28px,3.6vw,44px); color:var(--walnut)}
   .sec-no{font-family:var(--f-mono); color:var(--brass-dim); font-size:13px; letter-spacing:.15em}
   .sec-sub{color:var(--walnut-soft); max-width:64ch; margin:0 0 30px}
 
@@ -155,7 +156,10 @@
 
   /* ============ cast ============ */
   .castgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px}
-  .card{background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:22px 5px 22px 5px; overflow:hidden}
+  .castgrid>.card:nth-child(3n+2), .scenegrid>.card:nth-child(3n+2), .spongrid>.card:nth-child(3n+2){border-radius:5px 22px 5px 22px}
+  .castgrid>.card:nth-child(odd){transform:rotate(-.35deg)} .castgrid>.card:nth-child(even){transform:rotate(.3deg)}
+  .scenegrid>.card:nth-child(odd){transform:rotate(.3deg)} .scenegrid>.card:nth-child(even){transform:rotate(-.25deg)}
   .card-band{height:5px}
   .card-pad{padding:16px 18px}
   .cast-top{display:flex; gap:12px; align-items:center}
@@ -185,7 +189,7 @@
   .quoteblock small{display:block; font-style:normal; font-family:var(--f-mono); font-size:10px; color:var(--on-ink-dim); margin-top:5px; letter-spacing:.1em}
 
   /* ============ schedule ============ */
-  .schedwrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--paper)}
+  .schedwrap{overflow-x:auto; border:1px solid var(--line); border-radius:22px 5px 22px 5px; background:var(--paper)}
   table.sched{border-collapse:collapse; width:100%; min-width:900px; font-size:13px}
   .sched th{background:var(--ink); color:var(--on-ink); font-family:var(--f-chyron); font-weight:600; font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; padding:10px 12px; text-align:left; border-right:1px solid var(--ink-line)}
   .sched td{padding:10px 12px; border-top:1px solid var(--line); border-right:1px solid var(--line); vertical-align:top; min-width:110px}
@@ -231,11 +235,11 @@
   .tallybar{display:block; height:6px; background:var(--ink); margin-top:8px; border:1px solid var(--ink-line)}
   .tallybar i{display:block; height:100%; background:var(--brass); transition:width .6s}
   .vo-pct{font-family:var(--f-mono); font-size:10px; color:var(--on-ink-dim); margin-top:3px; display:block}
-  .govnote{background:var(--oat2); border:1px solid var(--brass-dim); border-radius:12px; padding:18px 20px; font-size:13.5px}
+  .govnote{background:var(--oat2); border:1px solid var(--brass-dim); border-radius:5px 22px 5px 22px; padding:18px 20px; font-size:13.5px}
   .govnote h3{font-size:15px; letter-spacing:.1em; color:var(--walnut); margin-bottom:8px}
   .govnote p{margin:0 0 8px; color:var(--walnut-soft)}
   .govnote .lockline{font-family:var(--f-mono); font-size:11px; color:var(--walnut)}
-  .lb{margin-top:20px; background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+  .lb{margin-top:20px; background:var(--paper); border:1px solid var(--line); border-radius:22px 5px 22px 5px; overflow:hidden}
   .lb h3{background:var(--ink); color:var(--brass-bright); font-size:12px; letter-spacing:.16em; padding:9px 16px}
   .lbrow{display:flex; align-items:center; gap:10px; padding:9px 16px; border-top:1px solid var(--line); font-size:13px}
   .lbrow .rank{font-family:var(--f-mono); font-size:11px; width:20px; color:var(--walnut-soft)}
@@ -306,7 +310,7 @@
   @keyframes f15-talk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
 
   /* ============ office stage (the wide shot) ============ */
-  .stage{position:relative; border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  .stage{position:relative; border:1px solid var(--line); border-radius:26px 6px 26px 6px; overflow:hidden;
     background:linear-gradient(180deg, var(--oat2) 0 34%, #CDBD9C 34% 100%)}
   html.night .stage{background:linear-gradient(180deg, #16141d 0 34%, #241f2e 34% 100%)}
   .stage-wall{position:absolute; inset:0 0 66% 0; border-bottom:3px solid #B9A87f;
@@ -375,3 +379,17 @@
   .loop-card .sub{font-family:var(--f-mono); font-size:12px; color:var(--on-ink-dim); letter-spacing:.1em}
   .loop-floor{position:absolute; top:60px; right:160px; font-family:var(--f-chyron); font-size:30px; color:var(--brass-bright); z-index:7}
   @media (max-width:700px){ .loop-elev{right:24px} .loop-side{display:none} .loop-lt{right:24px} .loop-floor{right:36px} }
+
+  /* ============ 3D stage / car (v0.5) ============ */
+  .stage3d{position:relative; border:1px solid var(--line); border-radius:26px 6px 26px 6px; overflow:hidden; aspect-ratio:16/8; min-height:300px; background:var(--oat2)}
+  .stage3d canvas,.carview3d canvas,.loop3d canvas{display:block; width:100%!important; height:100%!important}
+  .camswitch{position:absolute; top:12px; right:12px; display:flex; flex-direction:column; gap:5px; z-index:4}
+  .cambtn{font-family:var(--f-mono); font-size:9px; letter-spacing:.12em; padding:4px 8px; background:rgba(23,21,15,.82); color:var(--on-ink-dim); border:1px solid var(--ink-line); text-align:right}
+  .cambtn.on{color:var(--brass-bright); border-color:var(--brass)}
+  .cambtn:hover{color:var(--on-ink)}
+  .caption3d{position:absolute; left:12px; right:12px; bottom:12px; z-index:4; background:rgba(23,21,15,.88); border-left:3px solid var(--brass); padding:8px 12px; display:flex; gap:12px; align-items:baseline}
+  .cap-who{font-family:var(--f-chyron); font-size:13px; letter-spacing:.08em; text-transform:uppercase; flex:none}
+  .cap-line{font-size:13.5px; color:var(--on-ink)}
+  .carview3d{position:relative; height:230px; border-bottom:1px solid var(--ink-line); overflow:hidden}
+  .loop3d{position:absolute; inset:0}
+  @media (max-width:700px){ .stage3d{aspect-ratio:4/3} .camswitch{flex-direction:row; flex-wrap:wrap; left:12px; right:auto; top:auto; bottom:52px} .cambtn{text-align:left} }

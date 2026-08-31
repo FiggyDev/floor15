@@ -17,6 +17,8 @@ Nothing on this roadmap is a financial commitment of any kind.*
 - [ ] Chambers (live HR hearings, audience jury)
 - [ ] First hand-sold sponsor arcs
 - [ ] LLM generation behind the SAME compiler/Linda/human gates (contract unchanged)
+- [ ] AI Vibe System / Soul File v0.1 — versioned identity schema with tests for identity
+      continuity, vibe regression, model routing, and a no-consciousness-claims lint (see issues)
 - [ ] Day-30 cliffhanger; badge WAITLIST opens (email only; no pricing, no promises)
 
 ## Later — only after the go/no-go gate (retention, participation, sponsors, counsel)

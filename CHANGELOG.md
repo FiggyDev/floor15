@@ -2,6 +2,21 @@
 
 All notable changes. Format: Keep a Changelog-ish; versions are ships, not releases yet.
 
+## [0.5.0] — 2026-08-31 — the 3D office
+### Added
+- three.js cartoon office (toon shading, outlines, procedural only, zero assets): skyline glass
+  wall, corner office + putting green, fish tank with swimming fish, ping-pong + beer-pong cups,
+  velvet rope, disco ball, neon SHIP IT sign, crashing-chart TV, Employee of the Month (the
+  coffee machine, posthumous), pendant lights, plants, cash confetti
+- Cartoon characters with faces, hair silhouettes, signature props, talking mouths, speaker rings
+- Camera system: wide/desk/boardroom/legal/elevator/loop with glide transitions
+- 3D elevator car (doors, interior, occupants) wired to the existing scene contract; #loop now 3D
+- Design identity pass: Bricolage Grotesque / Instrument Sans / Space Mono, asymmetric-corner
+  cards, skewed broadcast buttons
+- WebGL failure falls back to the v0.4 2D animated stage (kept intact)
+### Baseline
+- v0.4 preserved: tag v0.4.0-animated-floor-baseline + branch stable/animated-floor-baseline
+
 ## [0.4.0] — 2026-08-31 — animated floor
 ### Added
 - SVG character sprites for the Launch Seven (idle/blink/talking states, signature props)

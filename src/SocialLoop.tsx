@@ -3,6 +3,7 @@
    the dial, the 16 button, a funny lower-third, the title card. Loops forever. */
 import { useEffect, useRef, useState } from "react";
 import { CharacterSprite } from "./sprites";
+import { Office3D } from "./Office3D";
 import { SHOW } from "./show";
 
 interface Step { at: number; line?: { who: string | null; txt: string; redacted?: boolean };
@@ -49,6 +50,7 @@ export default function SocialLoop() {
   const [flash16, setFlash16] = useState(false);
   const [card, setCard] = useState(false);
   const [speaker, setSpeaker] = useState<string | null>(null);
+  const [gl3d, setGl3d] = useState(true);
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
@@ -87,12 +89,17 @@ export default function SocialLoop() {
         </div>
 
         <div className={"loop-elev" + (doors === "open" ? " doors-open" : "")}>
-          <div className="car-inner">
-            <CharacterSprite id="max" size={168} talking={speaker === "max"} />
-            <CharacterSprite id="roxy" size={168} talking={speaker === "roxy"} />
-          </div>
+          {gl3d ? (
+            <Office3D mode="loop" speakerId={speaker} carCast={["max", "roxy"]} doorsOpen={doors === "open"}
+              night onFail={() => setGl3d(false)} className="loop3d" />
+          ) : (
+            <div className="car-inner">
+              <CharacterSprite id="max" size={168} talking={speaker === "max"} />
+              <CharacterSprite id="roxy" size={168} talking={speaker === "roxy"} />
+            </div>
+          )}
           <div className={"car-redact" + (redact ? " on" : "")}>REDACTED</div>
-          <div className="door l" /><div className="door r" />
+          {!gl3d && <><div className="door l" /><div className="door r" /></>}
           <div className="loop-lines">
             {lines.map((l, i) => (
               <div className="eline show" key={i + l.txt}>
